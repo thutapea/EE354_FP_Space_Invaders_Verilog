@@ -1,9 +1,8 @@
-this is the most recent, useful files.
+The files in root is the first commit. Latest version is in file src_projctx. 
+In the most recent version, the following features were implemented:
+  debouncing: debounced buttons for all movement
+  Left Button: player can now move left
+  Enemy: displays an enemy with hitbox
+  bullet: a bullet is created when center button is pressed, moves on button
+  collision: when bullet collides with enemy, enemy turns white and bullet is reset
 
-implemented a blue player square, inside the whitezone.
-
-right button can change xposition of square
-
-need to implement debouncing.
-
-a key takeaway is that the rgb else if statement exists the first-priority case.
