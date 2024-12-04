@@ -53,6 +53,7 @@ module vga_bitchange(
     wire [9:0] ben_x;
     wire bullet;
     wire collision;
+    wire stars;
     wire [9:0] enemy1_x;
     wire [9:0] enemy1_y;
     wire [9:0] enemy1_bx;
@@ -132,7 +133,7 @@ module vga_bitchange(
 	 	if (ben_v >=10'd399)
 			rgb = BLACK;
 	   	else
-			rgb = WHITE;
+			rgb = RED;
 	end
 	else if (enemy1_d == 1)begin
 	   if (enemy1_c)
@@ -190,7 +191,7 @@ module vga_bitchange(
 			rgb = WHITE;
 	end
 
-	else if (enemy9_d ==1)begin
+	else if(enemy9_d ==1)begin
 		if (enemy_TR ==1)
 			rgb = BLACK;
 		else
@@ -257,7 +258,8 @@ module vga_bitchange(
 		else
 			rgb = WHITE;
 	end
-
+    else if (stars == 1)
+	   rgb = WHITE;
 	 else if (whiteZone == 1)
 		rgb = BLACK; // white box
 	 else
@@ -265,15 +267,40 @@ module vga_bitchange(
 	end
 		
 	assign whiteZone = ((hCount >= 10'd144) && (hCount <= 10'd784)) && ((vCount >= 10'd400) && (vCount <= 10'd475)) ? 1 : 0;
-
-	assign player = ((hCount >= x_position_player) && (hCount < x_position_player + 10'd40)) &&
-				   ((vCount >= 10'd400) && (vCount <= 10'd440)) ? 1 : 0;
+    assign stars = ((hCount + vCount)%17 == 0) && (vCount%13 == 0)? 1 : 0;
+    
+    assign player = (
+                   ((hCount >= x_position_player) && (hCount < x_position_player + 10'd40)) &&
+				   ((vCount >= 10'd420) && (vCount <= 10'd440)) 
+				   || 
+				   ((hCount >= x_position_player + + 10'd10) && (hCount < x_position_player + 10'd30)) &&
+				   ((vCount >= 10'd400) && (vCount <= 10'd410))
+				   ||
+				   ((hCount >= x_position_player + + 10'd15) && (hCount < x_position_player + 10'd25)) &&
+				   ((vCount >= 10'd410) && (vCount <= 10'd420))
+				   )? 1 : 0;
 				   
-	assign bullet = ((hCount >= ben_x) && (hCount < ben_x + 10'd10)) &&
-				   ((vCount >= ben_v) && (vCount <= ben_v + 10'd20)) ? 1 : 0;
+	assign bullet = (
+	               ((hCount >= ben_x + 10'd4) && (hCount < ben_x + 10'd6)) &&
+				   ((vCount >= ben_v +10'd12) && (vCount <= ben_v + 10'd20))
+				   ||
+				   ((hCount >= ben_x + 10'd2) && (hCount < ben_x + 10'd8)) &&
+				   ((vCount >= ben_v +10'd6) && (vCount <= ben_v + 10'd12))
+				   ||
+				   ((hCount >= ben_x) && (hCount < ben_x + 10'd10)) &&
+				   ((vCount >= ben_v) && (vCount <= ben_v + 10'd6))
+				   ||
+				   ((hCount >= ben_x + 10'd2) && (hCount < ben_x + 10'd8)) &&
+				   ((vCount >= ben_v - 10'd2) && (vCount <= ben_v))
+				   )
+				    ? 1 : 0;
 	
-	assign enemy1_d = ((hCount >= enemy1_x) && (hCount <= enemy1_x + 10'd20)) &&
-				   ((vCount >= enemy1_y) && (vCount <= enemy1_y + 10'd20)) ? 1 : 0;
+	assign enemy1_d = (
+	                  (((hCount >= enemy1_x) && (hCount <= enemy1_x + 10'd20)) &&
+				      ((vCount >= enemy1_y) && (vCount <= enemy1_y + 10'd20)))
+				      
+				   )
+				    ? 1 : 0;
 	
 	assign enemy2_d = ((hCount >= (enemy1_x -10'd25)) && (hCount <= enemy1_x - 10'd5)) &&
 				   ((vCount >= enemy1_y) && (vCount <= enemy1_y + 10'd20)) ? 1 : 0;
@@ -328,5 +355,6 @@ module vga_bitchange(
 	
 	assign enemy9bullet = ((hCount >= enemy9_bx) && (hCount <= enemy9_bx + 10'd5)) &&
 				   ((vCount >= enemy9_by) && (vCount <= enemy9_by + 10'd5)) ? 1 : 0;
+	
 	
 endmodule

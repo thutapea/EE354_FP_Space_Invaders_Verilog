@@ -70,6 +70,7 @@ module game_logic (
     reg enable_enemybullet8;
     reg enable_enemybullet9;
     reg[2:0] random_number;
+    reg benflag;
    //enemy array x, y, bx, by, s, a, d,
     
     // local variables
@@ -89,6 +90,7 @@ module game_logic (
 		bullet_speed_wave_input = 50'd2000000000;
 		movement_speed_wave_input = 50'd2000000;
 		random_number = 1;
+		benflag = 0;
 		
 	end
 
@@ -114,8 +116,9 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
             else begin                                             
                 x_position_player = x_position_player - 10'd10; end
         end
-        else if (C_MCEN)begin
+        else if (C_MCEN && (benflag == 0))begin
             ben = 1;
+            benflag = 1;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
         end           
@@ -131,6 +134,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
                 if (ben_v <= 10'd34)begin
                     ben_v = 10'd400;
                     ben = 0;
+                    benflag = 0;
                 end
         end
 
@@ -139,6 +143,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
         if ((ben_x >= enemy1_x) & (ben_x <= enemy1_x+ 10'd20) & (ben_v == enemy1_y + 10'd20) & ~enemy1_c)begin
             enemy1_c = 1;
             ben = 0;
+            benflag = 0;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
             
@@ -149,6 +154,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
             if ((ben_x >= enemy1_x -10'd25) & (ben_x <= enemy1_x - 10'd5) & (ben_v == enemy1_y + 10'd20) & ~enemy_BL)begin
             enemy_BL = 1;
             ben = 0;
+            benflag = 0;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
             
@@ -159,6 +165,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
             if ((ben_x >= enemy1_x + 10'd25) & (ben_x <= enemy1_x + 10'd45) & (ben_v == enemy1_y + 10'd20) & ~enemy_BR)begin
             enemy_BR = 1;
             ben = 0;
+            benflag = 0;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
             
@@ -171,6 +178,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
         if ((ben_x >= enemy1_x) & (ben_x <= enemy1_x+ 10'd20) & (ben_v == enemy1_y - 10'd25) & ~enemy_MM)begin
             enemy_MM = 1;
             ben = 0;
+            benflag = 0;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
             
@@ -181,6 +189,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
             if ((ben_x >= enemy1_x -10'd25) & (ben_x <= enemy1_x - 10'd5) & (ben_v == enemy1_y - 10'd25) & ~enemy_ML)begin
             enemy_ML = 1;
             ben = 0;
+            benflag = 0;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
             
@@ -191,6 +200,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
             if ((ben_x >= enemy1_x + 10'd25) & (ben_x <= enemy1_x + 10'd45) & (ben_v == enemy1_y - 10'd25) & ~enemy_MR)begin
             enemy_MR = 1;
             ben = 0;
+            benflag = 0;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
             
@@ -203,6 +213,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
         if ((ben_x >= enemy1_x) & (ben_x <= enemy1_x+ 10'd20) & (ben_v == enemy1_y - 10'd50) & ~enemy_TM)begin
             enemy_TM = 1;
             ben = 0;
+            benflag = 0;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
             
@@ -213,6 +224,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
             if ((ben_x >= enemy1_x -10'd25) & (ben_x <= enemy1_x - 10'd5) & (ben_v == enemy1_y - 10'd50) & ~enemy_TL)begin
             enemy_TL = 1;
             ben = 0;
+            benflag = 0;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
             
@@ -223,6 +235,7 @@ ee201_debouncer #(.N_dc(25)) ggee201_debouncer_3
             if ((ben_x >= enemy1_x + 10'd25) & (ben_x <= enemy1_x + 10'd45) & (ben_v == enemy1_y - 10'd50) & ~enemy_TR)begin
             enemy_TR = 1;
             ben = 0;
+            benflag = 0;
             ben_v = 10'd400;
             ben_x = x_position_player + 10'd15;
             
